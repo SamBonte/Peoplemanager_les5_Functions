@@ -1,0 +1,14 @@
+﻿@model Function
+
+<tr>
+    <td>@Model.Name</td>
+    <td>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <button type="button" 
+                class="btn btn-danger" 
+                data-mode="delete"
+                data-id="@Model.Id"
+                data-bs-toggle="modal" 
+                data-bs-target="#deleteModal">Delete</button>
+    </td>
+</tr>

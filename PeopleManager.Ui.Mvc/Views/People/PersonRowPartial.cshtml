@@ -1,0 +1,27 @@
+﻿@model Person
+
+<tr>
+    <td>@Model.FirstName</td>
+    <td>@Model.LastName</td>
+    <td>@Model.Email</td>
+    <td>
+        @if (Model.FunctionId.HasValue)
+        {
+            @: @Model.Function.Name
+        }
+        else
+        {
+            @: No function assigned
+        }
+    </td>
+    <td>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+        <button type="button" 
+                class="btn btn-danger" 
+                data-mode="delete"
+                data-id="@Model.Id"
+                data-bs-toggle="modal" 
+                data-bs-target="#deleteModal">Delete with modal</button>
+    </td>
+</tr>

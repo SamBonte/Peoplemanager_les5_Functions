@@ -1,0 +1,20 @@
+﻿@model Person
+
+@{
+    ViewBag.Title = "Create Person";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<form method="post">
+    <partial name="CreateEditPartial" model="Model"/>
+    
+    <a asp-action="Index" class="btn btn-secondary">&lt; Back</a>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
