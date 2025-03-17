@@ -51,6 +51,7 @@ namespace PeopleManager.Services
             dbPerson.FirstName = person.FirstName;
             dbPerson.LastName = person.LastName;
             dbPerson.Email = person.Email;
+            dbPerson.FunctionId = person.FunctionId; //toegevoegd
 
             await _dbContext.SaveChangesAsync();
             
