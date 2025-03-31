@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PeopleManager.Model;
-using PeopleManager.Ui.Mvc.Services;
+using PeopleManager.Dtos.Requests;
+using PeopleManager.Sdk;
 
 namespace PeopleManager.Ui.Mvc.Controllers
 {
@@ -28,14 +28,14 @@ namespace PeopleManager.Ui.Mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromForm]Person person)
+        public async Task<IActionResult> Create([FromForm]PersonRequest request)
         {
             if (!ModelState.IsValid)
             {
-                return View(person);
+                return View(request);
             }
 
-            await _personService.Create(person);
+            await _personService.Create(request);
 
             return RedirectToAction("Index");
         }
@@ -52,19 +52,27 @@ namespace PeopleManager.Ui.Mvc.Controllers
             var functions = await _functionService.Find();
             ViewBag.Functions = functions;
 
-            return View(person);
+            var request = new PersonRequest
+            {
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                Email = person.Email,
+                FunctionId = person.FunctionId
+            };
+
+            return View(request);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([FromRoute]int id, [FromForm]Person person)
+        public async Task<IActionResult> Edit([FromRoute]int id, [FromForm]PersonRequest request)
         {
             if (!ModelState.IsValid)
             {
-                return View(person);
+                return View(request);
             }
 
-            await _personService.Update(id, person);
+            await _personService.Update(id, request);
 
             return RedirectToAction("Index");
         }

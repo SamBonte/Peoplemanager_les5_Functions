@@ -1,6 +1,7 @@
-﻿using PeopleManager.Model;
-
-namespace PeopleManager.Ui.Mvc.Services
+﻿using System.Net.Http.Json;
+using PeopleManager.Dtos.Results;
+using PeopleManager.Dtos.Requests;
+namespace PeopleManager.Sdk
 {
     public class FunctionApiService
     {
@@ -12,7 +13,7 @@ namespace PeopleManager.Ui.Mvc.Services
         }
 
         //Find
-        public async Task<IList<Function>> Find()
+        public async Task<IList<FunctionResult>> Find()
         {
             var route = "api/functions";
             var httpClient = _httpClientFactory.CreateClient("PeopleManagerApi");
@@ -20,18 +21,18 @@ namespace PeopleManager.Ui.Mvc.Services
 
             response.EnsureSuccessStatusCode();
 
-            var functions = await response.Content.ReadFromJsonAsync<IList<Function>>();
+            var functions = await response.Content.ReadFromJsonAsync<IList<FunctionResult>>();
 
             if (functions is null)
             {
-                return new List<Function>();
+                return new List<FunctionResult>();
             }
 
             return functions;
         }
 
         //Get
-        public async Task<Function?> Get(int id)
+        public async Task<FunctionResult?> Get(int id)
         {
             var route = $"api/functions/{id}";
             var httpClient = _httpClientFactory.CreateClient("PeopleManagerApi");
@@ -39,35 +40,35 @@ namespace PeopleManager.Ui.Mvc.Services
 
             response.EnsureSuccessStatusCode();
 
-            var function = await response.Content.ReadFromJsonAsync<Function>();
+            var function = await response.Content.ReadFromJsonAsync<FunctionResult>();
 
             return function;
         }
 
         //Create
-        public async Task<Function?> Create(Function function)
+        public async Task<FunctionResult?> Create(FunctionRequest request)
         {
             var route = "api/functions";
             var httpClient = _httpClientFactory.CreateClient("PeopleManagerApi");
-            var response = await httpClient.PostAsJsonAsync(route, function);
+            var response = await httpClient.PostAsJsonAsync(route, request);
 
             response.EnsureSuccessStatusCode();
 
-            var createdFunction = await response.Content.ReadFromJsonAsync<Function>();
+            var createdFunction = await response.Content.ReadFromJsonAsync<FunctionResult>();
 
             return createdFunction;
         }
 
         //Update
-        public async Task<Function?> Update(int id, Function function)
+        public async Task<FunctionResult?> Update(int id, FunctionRequest request)
         {
             var route = $"api/functions/{id}";
             var httpClient = _httpClientFactory.CreateClient("PeopleManagerApi");
-            var response = await httpClient.PutAsJsonAsync(route, function);
+            var response = await httpClient.PutAsJsonAsync(route, request);
 
             response.EnsureSuccessStatusCode();
 
-            var updatedFunction = await response.Content.ReadFromJsonAsync<Function>();
+            var updatedFunction = await response.Content.ReadFromJsonAsync<FunctionResult>();
 
             return updatedFunction;
         }

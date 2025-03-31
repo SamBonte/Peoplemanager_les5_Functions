@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace PeopleManager.Model
 {
@@ -9,7 +8,8 @@ namespace PeopleManager.Model
         public int Id { get; set; }
         public required string Name { get; set; }
 
-        [JsonIgnore]
+        public DateTime CreatedDate { get; set; }
+
         public IList<Person> People { get; set; } = new List<Person>();
     }
 }

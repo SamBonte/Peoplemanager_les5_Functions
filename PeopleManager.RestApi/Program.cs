@@ -1,6 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using PeopleManager.Repository;
-using PeopleManager.Services;
+using PeopleManager.RestApi.Installers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,18 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
-//var connectionString = builder.Configuration.GetConnectionString(nameof(PeopleManagerDbContext));
-
-builder.Services.AddDbContext<PeopleManagerDbContext>(options =>
-{
-    //options.UseSqlServer(connectionString);
-    options.UseInMemoryDatabase(nameof(PeopleManagerDbContext));
-});
+builder.Services.AddSwaggerGen();
 
 //Register Services
-builder.Services.AddScoped<FunctionService>();
-builder.Services.AddScoped<PersonService>();
+builder.Services.InstallServices();
+builder.Services.InstallDbContext();
 
 var app = builder.Build();
 
@@ -28,6 +20,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    
+    app.MapSwagger();
+    app.UseSwaggerUI();
+
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<PeopleManagerDbContext>();
     dbContext.Seed();

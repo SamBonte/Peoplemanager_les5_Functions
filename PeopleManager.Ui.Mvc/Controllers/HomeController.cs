@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PeopleManager.Ui.Mvc.Models;
 using System.Diagnostics;
-using PeopleManager.Ui.Mvc.Services;
+using PeopleManager.Sdk;
 
 namespace PeopleManager.Ui.Mvc.Controllers
 {
@@ -17,6 +17,7 @@ namespace PeopleManager.Ui.Mvc.Controllers
         public async Task<IActionResult> Index()
         {
             var people = await _personService.Find();
+
             return View(people);
         }
 

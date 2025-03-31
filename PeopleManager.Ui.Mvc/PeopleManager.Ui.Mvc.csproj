@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PeopleManager.Model\PeopleManager.Model.csproj" />
+    <ProjectReference Include="..\PeopleManager.Dtos\PeopleManager.Dtos.csproj" />
+    <ProjectReference Include="..\PeopleManager.Sdk\PeopleManager.Sdk.csproj" />
   </ItemGroup>
 
 </Project>

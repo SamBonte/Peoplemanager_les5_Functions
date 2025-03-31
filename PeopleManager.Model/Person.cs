@@ -9,17 +9,14 @@ namespace PeopleManager.Model
     {
         public int Id { get; set; }
 
-        [DisplayName("First name")]
-        [Required]
         public required string FirstName { get; set; }
 
-        [DisplayName("Last name")]
-        [Required]
         public required string LastName { get; set; }
 
-        [EmailAddress]
         public string? Email { get; set; }
-        
+
+        public DateTime CreatedDate { get; set; }
+
         public int? FunctionId { get; set; }
         public Function? Function { get; set; } = null!;
     }

@@ -1,4 +1,4 @@
-﻿@model Person
+﻿@model PersonResult
 
 <tr>
     <td>@Model.FirstName</td>
@@ -7,7 +7,7 @@
     <td>
         @if (Model.FunctionId.HasValue)
         {
-            @: @Model.Function.Name
+            @: @Model.FunctionName
         }
         else
         {

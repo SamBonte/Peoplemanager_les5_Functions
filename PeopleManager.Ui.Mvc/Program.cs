@@ -1,14 +1,12 @@
-using PeopleManager.Ui.Mvc.Services;
+using PeopleManager.Sdk;
+using PeopleManager.Sdk.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddHttpClient("PeopleManagerApi", configure =>
-{
-    configure.BaseAddress = new Uri("https://localhost:7175");
-});
+builder.Services.AddApi("https://localhost:7175");
 
 //Register Api Services
 builder.Services.AddScoped<FunctionApiService>();

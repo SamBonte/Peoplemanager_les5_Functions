@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PeopleManager.Model;
+﻿using Microsoft.AspNetCore.Mvc;
+using PeopleManager.Dtos.Requests;
 using PeopleManager.Services;
 
 namespace PeopleManager.RestApi.Controllers
@@ -26,16 +25,20 @@ namespace PeopleManager.RestApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Person person)
+        public async Task<IActionResult> Create([FromBody] PersonRequest request)
         {
-            var createdPerson = await _personService.Create(person);
+            var createdPerson = await _personService.Create(request);
+            if (createdPerson is null)
+            {
+                return Ok(createdPerson);
+            }
             return CreatedAtRoute("GetPersonRoute", new { id = createdPerson.Id }, createdPerson);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] Person person)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] PersonRequest request)
         {
-            var updatedPerson = await _personService.Update(id, person);
+            var updatedPerson = await _personService.Update(id, request);
             return Ok(updatedPerson);
         }
 
