@@ -4,6 +4,8 @@ using PeopleManager.Dtos.Results;
 using PeopleManager.Model;
 using PeopleManager.Repository;
 using PeopleManager.Services.Extensions;
+using Vives.Services.Model;
+using Vives.Services.Model.Extensions;
 
 namespace PeopleManager.Services
 {
@@ -37,7 +39,7 @@ namespace PeopleManager.Services
         }
 
         //Create
-        public async Task<PersonResult?> Create(PersonRequest request)
+        public async Task<ServiceResult<PersonResult>> Create(PersonRequest request)
         {
             var person = new Person
             {
@@ -52,16 +54,18 @@ namespace PeopleManager.Services
 
             await _dbContext.SaveChangesAsync();
 
-            return await Get(person.Id);
+            var result = await Get(person.Id);
+            return new ServiceResult<PersonResult> { Data = result };
         }
 
         //Update
-        public async Task<PersonResult?> Update(int id, PersonRequest request)
+        public async Task<ServiceResult<PersonResult>> Update(int id, PersonRequest request)
         {
             var person = await _dbContext.People.FirstOrDefaultAsync(p => p.Id == id);
             if (person is null)
             {
-                return null;
+                var serviceResult = new ServiceResult<PersonResult>()
+                    .NotFound(nameof(Person));
             }
 
             person.FirstName = request.FirstName;
@@ -71,11 +75,12 @@ namespace PeopleManager.Services
 
             await _dbContext.SaveChangesAsync();
             
-            return await Get(id);
+            var result = await Get(id);
+            return new ServiceResult<PersonResult> { Data = result };
         }
 
         //Delete
-        public async Task Delete(int id)
+        public async Task<ServiceResult> Delete(int id)
         {
             var person = new Person()
             {
@@ -86,7 +91,15 @@ namespace PeopleManager.Services
             _dbContext.People.Attach(person);
 
             _dbContext.People.Remove(person);
-            await _dbContext.SaveChangesAsync();
+            var changes = await _dbContext.SaveChangesAsync();
+
+            if (changes == 0)
+            {
+                return new ServiceResult().NothingChanged();
+            }
+
+
+            return new ServiceResult();
         }
     }
 }
